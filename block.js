@@ -15,6 +15,19 @@ class Block {
             data: ${this.data}
             `
   }
+
+  // use 'new this' to call the constructor
+  static genesis() { 
+    return new this('Genesis time', '-------','JFGWADWADWA32',[])
+  }
+
+  static mineBlock(lastBlock, data) {
+    const timestamp = Date.now(); 
+    const lastHash = lastBlock.hash;
+    const hash = 'a-fazer-hash';
+
+    return new this(timestamp, lastHash, hash, data);
+  }
 }
 
 
