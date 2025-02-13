@@ -11,8 +11,11 @@ class Block {
     Block =
             Timestamp: ${this.timestamp}
             lastHash: ${this.lastHash}
-            hash: ${this.hash}
+            hash: ${this.hash.substring(0, 10)} 
             data: ${this.data}
             `
   }
 }
+
+
+module.exports = Block;
