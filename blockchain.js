@@ -6,10 +6,12 @@ class Blockchain {
   }
 
   addBlock(data){
-    const lastBlock = this.chain[this.chain.length - 1] //pega o ultimo bloco
-    const block = Block.mineBlock(lastBlock, data) //cria um novo bloco
+    const block = Block.mineBlock(this.chain[this.chain.length - 1], data) //cria um novo bloco
     this.chain.push(block)
 
     return block;
   }
 }
+
+
+module.exports = Blockchain;
