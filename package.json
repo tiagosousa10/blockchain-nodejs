@@ -4,13 +4,16 @@
   "description": "",
   "main": "block.js",
   "scripts": {
-    "test": "jest --watchALL"
+    "test": "jest --watchALL",
+    "start": "node ./app",
+    "dev": "node ./app"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crypto-js": "^4.2.0"
+    "crypto-js": "^4.2.0",
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "jest": "^29.7.0"
