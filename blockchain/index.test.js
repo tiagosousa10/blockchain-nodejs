@@ -1,5 +1,5 @@
 
-const Blockchain = require('./blockchain.js');
+const Blockchain = require('./index.js');
 const Block = require('./block.js');
 
 describe('Blockchain', () => {
