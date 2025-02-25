@@ -14,3 +14,9 @@ listen() {
   const server = new Websocket.Server({port : P2P_PORT})
   server.on('connection', (socket) => this.connectSocket(socket)) //cria uma conexão com o socket
 }
+
+
+connectSocket(socket) {
+  this.socket.push(socket);
+  console.log('Socket connected')
+}
