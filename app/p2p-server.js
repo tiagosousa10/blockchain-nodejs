@@ -33,7 +33,19 @@ class P2pServer {
     this.socket.push(socket);
     console.log('Socket connected')
 
+    this.messageHandler(socket)
+    socket.send(JSON.stringify(this.blockchain.chain)) //envia uma mensagem
   }
+
+
+  messageHandler(socket){
+    
+    socket.on('message', message => {
+      const data = JSON.parse(message) //transforma o json em um objeto
+      console.log('data: ',data)
+    })
+  }
+
 };
 
 
