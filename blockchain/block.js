@@ -1,6 +1,5 @@
 const SHA256 = require('crypto-js/sha256')
-
-const DIFFICULTY = 4; // dificuldade para minerar o bloco
+const {DIFFICULTY} = require('../config')
 
 class Block {
   constructor(timestamp, lastHash, hash, data, nonce) { 
@@ -30,30 +29,30 @@ class Block {
 
   static mineBlock(lastBlock, data) {
 
-    let hash, timestamp;
-    const lastHash = lastBlock.hash;
+    let hash, timestamp; // variáveis locais
+    const lastHash = lastBlock.hash; // hash do bloco anterior
     let nonce = 0;
 
     do {
       nonce++;
       timestamp = Date.now(); 
       hash = Block.hash(timestamp, lastHash, data, nonce) //using static hash created
-    } while()
+    } while(hash.substring(0,DIFFICULTY) !== '0'.repeat(DIFFICULTY)) // 0 a 4 posições que se repete 4 vezes
 
-    return new this(timestamp, lastHash, hash, data);
+    return new this(timestamp, lastHash, hash, data, nonce);
   }
 
 
-  //SHA - 256 -> hash do bloco
-  static hash(timestamp, lastHash, data, nonce) {
-    return SHA256(`${timestamp}${lastHash}${data}${nonce}`).toString();
+//SHA - 256 -> hash do bloco
+static hash(timestamp, lastHash, data, nonce) {
+  return SHA256(`${timestamp}${lastHash}${data}${nonce}`).toString();
 }
 
-  static blockHash(block) {
-    const {timestamp, lastHash, data, nonce} = block; //destructuring
+static blockHash(block) {
+  const {timestamp, lastHash, data, nonce} = block; //destructuring
 
-    return Block.hash(timestamp, lastHash, data, nonce)
-  }
+  return Block.hash(timestamp, lastHash, data, nonce)
+}
 
 }
 
