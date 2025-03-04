@@ -17,6 +17,8 @@ app.post('/mine', (req,res) => {
   const block = bc.addBlock(req.body.data) //cria um novo bloco
   console.log(`New block added: ${block.toString()}`) //imprime o novo bloco
 
+  p2pServer.syncChain() //sincroniza a cadeia
+
   res.redirect('/blocks') //redireciona para a rota /blocks
 })
 
