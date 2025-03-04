@@ -21,6 +21,6 @@ describe('Block', () => {
   });
 
   it('generates a hash that matches the difficulty', () => {
-    expect()
+    expect(block.hash.substring(0,DIFFICULTY)).toEqual('0'.repeat(DIFFICULTY)) // 0 a 4 posições que se repete 4 vezes
   })
 })
