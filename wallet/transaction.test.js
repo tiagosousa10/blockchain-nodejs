@@ -11,4 +11,10 @@ describe('Transaction', () => {
     recipient = '8lockch4in';
     transaction= Transaction.newTransaction(wallet, recipient, amount);
   })
+  it('output the `amount`subtracted from the wallet balance', () => {
+    expect(transaction.outputs.find(output => output.address === wallet.publicKey).amount).toEqual(wallet.balance - amount)
+  })
+  it('output `amount`added to recipient', () => {
+    expect(transaction.outputs.find(output => output.address === recipient).amount).toEqual(amount)
+  })
 })
