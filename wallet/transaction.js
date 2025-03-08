@@ -6,4 +6,24 @@ class Transaction {
     this.input = null;
     this.outputs = [];
   }
+
+  static newTransaction(senderWallet, recipient, amount) {
+    const transaction = new this();
+
+    if(amount > senderWallet.balance) { // se o amount for maior que o balance do senderWallet
+      console.log(`Amount: ${amount} exceeds the current balance`);
+      return;
+    }
+
+    transaction.outputs.push(
+      ...[{amount: senderWallet.balance - amount, address: senderWallet.publicKey}, //senderWallet
+        {amount, address: recipient }] //recipient
+    )
+
+    return transaction;
+
+  }
 }
+
+
+module.exports = Transaction;
