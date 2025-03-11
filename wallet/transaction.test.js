@@ -1,5 +1,5 @@
 // in wallet/transaction.test.js
-const { beforeEach } = require('node:test');
+const { beforeEach, it } = require('node:test');
 const Wallet = require('./index');
 const Transaction = require('./transaction');
 
@@ -41,17 +41,47 @@ describe('Transaction', () => {
       expect(transaction).toEqual(undefined)
     }
   })
-})
 
-describe('transacting with an amount that exceeds the balance', () =>{
-  let transaction;
+  it('validates a valid transaction', () => {
+    expect(Transaction.verifyTransaction(transaction)).toBe(true)
+  })
+
+  it('invalidates a corrupt transaction', () => {
+    transaction.outputs[0].amount = 50000;
+    expect(Transaction.verifyTransaction(transaction)).toBe(false)
+  })
+
+// describe('transacting with an amount that exceeds the balance', () =>{
+//   let transaction;
   
-  beforeEach(() => {
-    amount= 5000;
-    transaction = Transaction.newTransaction(wallet,recipient,amount);
-  })
+//   beforeEach(() => {
+//     // amount= 5000;
+//     transaction = Transaction.newTransaction(wallet,recipient,amount);
+//   })
 
-  it('does not create the transaction' , () => {
-    expect(transaction).toEqual(undefined)
-  })
+//   it('does not create the transaction' , () => {
+//     expect(transaction).toEqual(undefined)
+//   })
+// })
+
+
+
 })
+
+
+// describe('transacting with an amount that exceeds the balance', () =>{
+//   let wallet = new Wallet();
+//   beforeEach(() => {
+//     amount = wallet.balance + 1; // ensure the amount exceeds the balance
+//     try {
+//       transaction = Transaction.newTransaction(wallet, recipient, amount);
+//     } catch (error) {
+//       console.log(error);
+//       transaction = null;
+//     }
+//   })
+
+//   it('does not create the transaction' , () => {
+//     expect(transaction).toBeInstanceOf(Transaction);
+//   })
+// })
