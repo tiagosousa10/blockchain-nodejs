@@ -33,6 +33,14 @@ describe('Transaction', () => {
       expect(transaction).toEqual(undefined)
     }
   })
+
+  it('inputs the balance of the wallet', () => {
+    if(transaction ) {
+      expect(transaction.input.amount).toEqual(wallet.balance)
+    } else {
+      expect(transaction).toEqual(undefined)
+    }
+  })
 })
 
 describe('transacting with an amount that exceeds the balance', () =>{

@@ -1,4 +1,4 @@
-const ChainUtil = require('./chain-util');
+const ChainUtil = require('../chain-util/chain-util');
 
 const {DIFFICULTY, MINE_RATE} = require('../config')
 
