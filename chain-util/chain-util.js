@@ -17,6 +17,10 @@ class ChainUtil{ //utilidade da cadeia de blocos
     return SHA256(JSON.stringify(data)).toString()
   }
 
+  static verifySignature(publicKey, signature, dataHash) {
+    return ec.keyFromPublic(publicKey, 'hex').verify(dataHash, signature)
+  }
+
 }
 
 
