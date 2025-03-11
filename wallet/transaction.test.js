@@ -1,4 +1,5 @@
 // in wallet/transaction.test.js
+const { beforeEach } = require('node:test');
 const Wallet = require('./index');
 const Transaction = require('./transaction');
 
@@ -21,7 +22,7 @@ describe('Transaction', () => {
     if (transaction) {
       expect(transaction.outputs.find(output => output.address === wallet.publicKey).amount).toEqual(wallet.balance - amount)
     } else {
-      expect(transaction).toBeNull();
+      expect(transaction).toEqual(undefined);
     }
   })
 
@@ -29,7 +30,20 @@ describe('Transaction', () => {
     if (transaction) {
       expect(transaction.outputs.find(output => output.address === recipient).amount).toEqual(amount)
     } else {
-      expect(transaction).toBeNull();
+      expect(transaction).toEqual(undefined)
     }
+  })
+})
+
+describe('transacting with an amount that exceeds the balance', () =>{
+  let transaction;
+  
+  beforeEach(() => {
+    amount= 5000;
+    transaction = Transaction.newTransaction(wallet,recipient,amount);
+  })
+
+  it('does not create the transaction' , () => {
+    expect(transaction).toEqual(undefined)
   })
 })
