@@ -17,6 +17,10 @@ class Wallet {
         balance: ${this.balance}
     `
   }
+
+  sign(dataHash) {
+    return this.keyPar.sign(dataHash) //gera uma assinatura
+  }
 }
 
 
