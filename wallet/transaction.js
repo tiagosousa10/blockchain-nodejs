@@ -12,7 +12,7 @@ class Transaction {
 
     if(amount > senderWallet.balance) { // se o amount for maior que o balance do senderWallet
       console.log(`Amount: ${amount} exceeds the current balance`);
-      return;
+      throw new Error('Amount exceeds the current balance');
     }
 
     transaction.outputs.push(
