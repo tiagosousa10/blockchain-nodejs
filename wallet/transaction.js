@@ -13,7 +13,13 @@ class Transaction {
       console.log(`Amount: ${amount} exceeds the current balance`);
       return;
     } 
+    senderOutput.amount = senderOutput.amount - amount; //subtrai o amount do senderWallet
+    this.outputs.push({amount, address: recipient}); //adiciona o amount ao recipient
+    Transaction.signTransaction(this, senderWallet) //assina a transação
+
+    return this;
   }
+
 
   static newTransaction(senderWallet, recipient, amount) {
     const transaction = new this();
@@ -34,6 +40,7 @@ class Transaction {
 
   }
 
+
   static signTransaction(transaction, senderWallet) {
     transaction.input = {
       timestamp: Date.now(),
@@ -42,6 +49,7 @@ class Transaction {
       signature: senderWallet.sign(ChainUtil.hash(transaction.outputs))
     }
   }
+
 
   static verifyTransaction(transaction) {
     return ChainUtil.verifySignature(
