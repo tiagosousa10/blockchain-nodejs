@@ -7,6 +7,14 @@ class Transaction {
     this.outputs = [];
   }
 
+  update(senderWallet,recipient, amount) {
+    const senderOutput = this.outputs.find(output => output.address === senderWallet.publicKey); //pega o output do senderWallet
+    if (amount > senderOutput.amount) {
+      console.log(`Amount: ${amount} exceeds the current balance`);
+      return;
+    } 
+  }
+
   static newTransaction(senderWallet, recipient, amount) {
     const transaction = new this();
 
