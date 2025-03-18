@@ -15,6 +15,10 @@ class TransactionPool {
       this.transactions.push(transaction) // adiciona a transação
     }
   }
+
+  existingTransaction(address) {
+    return this.transactions.find(t => t.input.address === address);
+  }
 }
 
 
