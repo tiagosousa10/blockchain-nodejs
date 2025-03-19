@@ -1,14 +1,20 @@
 const express = require('express')
 const Blockchain = require('../blockchain');
+const TransactionPool = require('../wallet/transaction-pool');
+const Wallet = require('../wallet');
 const HTTP_PORT = process.env.HTTP_PORT || 3001;
 const P2pServer = require('./p2p-server')
 
+//----- INSTANCES -----
 const app = express()
 const bc = new Blockchain()
-const p2pServer = new P2pServer(bc) //cria um servidor p2p que recebe a cadeia de blocos
+const tp = new TransactionPool()
+const wallet = new Wallet()
+const p2pServer = new P2pServer(bc, tp) //cria um servidor p2p que recebe a cadeia de blocos
 
 app.use(express.json()) // middleware para processar json
 
+//----- ROUTES -----
 app.get('/blocks', (req,res) => {
   res.json(bc.chain)
 })
@@ -22,5 +28,18 @@ app.post('/mine', (req,res) => {
   res.redirect('/blocks') //redireciona para a rota /blocks
 })
 
+app.get('/transactions', (req,res) => {
+  res.json(tp.transactions)
+})
+
+app.post('/transact', (req,res) => {
+  const {recipient, amount} = req.body;
+
+  const transaction = wallet.createTransaction(recipient, amount, tp)
+
+  res.redirect('/transactions') //redireciona para a rota /transactions
+})
+
+// ----- LISTENERS -----
 app.listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}`))
 p2pServer.listen();

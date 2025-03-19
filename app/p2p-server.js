@@ -5,10 +5,12 @@ const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
 
 
 class P2pServer {
-  constructor (blockchain) {
+  constructor (blockchain, transactionPool) {
     this.blockchain = blockchain;
+    this.transactionPool= transactionPool;
     this.socket = [];
   }
+
 
   listen() {
     const server = new Websocket.Server({port : P2P_PORT})
@@ -42,6 +44,10 @@ class P2pServer {
 
   }
 
+  sendTransaction(socket, transaction) {
+    socket.send(JSON.stringify(transaction))
+  }
+
   messageHandler(socket){
     
     socket.on('message', message => {
@@ -53,7 +59,10 @@ class P2pServer {
 
   syncChain(){
     this.socket.forEach(socket => this.sendChain(socket)) //envia a cadeia
-  
+  }
+
+  broadcastTransaction(transaction) {
+    this.socket.forEach(socket => this.sendTransaction(socket, transaction)) //envia a transação
   }
 
 };
