@@ -5,7 +5,7 @@ const Transaction = require('./transaction');
 
 class Wallet {
   constructor() {
-    this.balance = INITIAL_BALANCE;
+    this.balance = INITIAL_BALANCE || 0;
     this.keyPar = ChainUtil.genKeyPair(); //gera uma chave publica e privada 
     this.publicKey = this.keyPar.getPublic().encode('hex'); //pega a chave publica e codifica em hexadecimal
   }
