@@ -35,6 +35,7 @@ class P2pServer {
     //ws://localhost:5001
   }
 
+
   connectSocket(socket) {
     this.socket.push(socket);
     console.log('Socket connected')
@@ -43,27 +44,40 @@ class P2pServer {
     this.sendChain(socket) //envia a cadeia
   }
 
+
   sendChain(socket) {
     socket.send(JSON.stringify({type: MESSAGE_TYPES.chain, chain: this.blockchain.chain})) //envia uma mensagem
 
   }
 
+
   sendTransaction(socket, transaction) {
     socket.send(JSON.stringify({type: MESSAGE_TYPES.transaction, transaction}))
   }
+
 
   messageHandler(socket){
     
     socket.on('message', message => {
       const data = JSON.parse(message) //transforma o json em um objeto
-
+      switch(data.type) {
+        case MESSAGE_TYPES.chain:
+          this.blockchain.replaceChain(data.chain) //substitui a cadeia
+          break;
+        case MESSAGE_TYPES.transaction:
+          this.transactionPool.updateOrAddTransaction(data.transaction) //atualiza ou adiciona a transação
+          break;
+          
+      }
       this.blockchain.replaceChain(data) //substitui a cadeia
     })
   }
 
+
   syncChain(){
     this.socket.forEach(socket => this.sendChain(socket)) //envia a cadeia
   }
+
 
   broadcastTransaction(transaction) {
     this.socket.forEach(socket => this.sendTransaction(socket, transaction)) //envia a transação
