@@ -41,6 +41,11 @@ app.post('/transact', (req,res) => {
   res.redirect('/transactions') //redireciona para a rota /transactions
 })
 
+app.get('/public-key', (req,res) => {
+  res.json({publicKey: wallet.publicKey})
+})
+
+
 // ----- LISTENERS -----
 app.listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}`))
 p2pServer.listen();
