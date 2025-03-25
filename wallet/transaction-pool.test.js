@@ -51,4 +51,6 @@ describe('TransactionPool', () => {
       expect(tp.validTransactions()).toEqual(validTransactions)
     })
   })
+
+
 })
