@@ -7,6 +7,7 @@ class Miner{
     this.transactionPool = transactionPool;
     this.wallet = wallet;
     this.p2pServer = p2pServer;
+
   }
 
   mine() {
@@ -15,7 +16,10 @@ class Miner{
     const block = this.blockchain.addBlock(validTransactions);
     this.p2pServer.syncChain();
     this.transactionPool.clear()
-    //clear the transaction pool
+    this.p2pServer.broadcastClearTransactions();
+
+    return block;
+
     //broadcast to every miner to clear their transaction pool
 
   }

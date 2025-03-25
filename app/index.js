@@ -2,8 +2,9 @@ const express = require('express')
 const Blockchain = require('../blockchain');
 const TransactionPool = require('../wallet/transaction-pool');
 const Wallet = require('../wallet');
-const HTTP_PORT = process.env.HTTP_PORT || 3001;
 const P2pServer = require('./p2p-server')
+const Miner = require('./miner')
+const HTTP_PORT = process.env.HTTP_PORT || 3001;
 
 //----- INSTANCES -----
 const app = express()
@@ -11,6 +12,7 @@ const bc = new Blockchain()
 const tp = new TransactionPool()
 const wallet = new Wallet()
 const p2pServer = new P2pServer(bc, tp) //cria um servidor p2p que recebe a cadeia de blocos
+const miner = new Miner(bc, tp, wallet, p2pServer)//cria um miner que recebe a cadeia de blocos
 
 app.use(express.json()) // middleware para processar json
 
@@ -43,6 +45,12 @@ app.post('/transact', (req,res) => {
 
 app.get('/public-key', (req,res) => {
   res.json({publicKey: wallet.publicKey})
+})
+
+app.get('/mine-transactions', (req,res) => {
+  const block = miner.mine()
+  console.log(`New block added ${block.toString()}`)
+  res.redirect('/blocks')
 })
 
 
