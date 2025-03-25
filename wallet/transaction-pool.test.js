@@ -30,7 +30,7 @@ describe('TransactionPool', () => {
 
     beforeEach(() => {
       validTransactions = [...tp.transactions]; // copia as transações válidas
-
+      console.log(validTransactions)
       for(let i=0; i<6; i++) {
         wallet = new Wallet();
         transaction = wallet.createTransaction('r4nd0m-4ddr3ss', 30, tp);
