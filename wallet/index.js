@@ -6,6 +6,8 @@ const Transaction = require('./transaction');
 class Wallet {
   constructor() {
     this.balance = INITIAL_BALANCE || 0;
+    this.keyPar = null;
+    this.publicKey = null;
     this.keyPar = ChainUtil.genKeyPair(); //gera uma chave publica e privada 
     this.publicKey = this.keyPar.getPublic().encode('hex'); //pega a chave publica e codifica em hexadecimal
   }
@@ -43,6 +45,28 @@ class Wallet {
     return transaction;
   }
 
+  calculateBalance(blockchain) {
+    let balance = this.balance;
+    let transactions = [];
+
+    // percorre o blockchain e pega todas as transações
+    blockchain.chain.forEach(block => block.data.forEach(transaction => {
+      transactions.push(transaction);
+    }))
+
+    //pega as transações do senderWallet
+    const walletInputs = transactions.filter(transaction => transaction.input.address === this.publicKey); 
+
+    let startTime = 0;
+    if(walletInputs.length > 0) {
+      //pega a transação mais recente
+      const recentInput = walletInputs.reduce((prev, current) => prev.input.timestamp > current.input.timestamp ? prev : current); 
+    }
+
+    //pega o balance da transação mais recente
+    balance = recentInput.outputs.find(output => output.address === this.publicKey).amount;
+    startTime = recentInput.input.timestamp;
+  }
 
   static blockchainWallet() {
     const blockchainWallet = new this();
