@@ -2,14 +2,16 @@ const TransactionPool = require('./transaction-pool')
 const Transaction = require('./transaction')
 const Wallet = require('./index');
 const { beforeEach, describe } = require('node:test');
+const Blockchain = require('../blockchain');
 
 describe('TransactionPool', () => {
-  let tp, wallet, transaction;
+  let tp, bc,wallet, transaction;
 
   beforeEach(() => {
     tp = new TransactionPool();
     wallet = new Wallet();
     transaction = wallet.createTransaction('r4nd0m-4ddr3ss', 50, tp); // cria uma transação
+    bc = new Blockchain();  
   })
 
   it('adds a transaction to the pool' , () => {
@@ -38,7 +40,7 @@ describe('TransactionPool', () => {
       console.log(validTransactions)
       for(let i=0; i<6; i++) {
         wallet = new Wallet();
-        transaction = wallet.createTransaction('r4nd0m-4ddr3ss', 30, tp);
+        transaction = wallet.createTransaction('r4nd0m-4ddr3ss', 30, bc,tp);
 
         if(i%2 == 0) { // se o resto da divisão for 0, adiciona a transação ao pool
           transaction.input.amount = 999999;
